@@ -1,41 +1,45 @@
 {
-  "metaTitle": "",
-  "metaDescription": "",
+  "metaTitle": "Cadência — esporte com ficha técnica comparável",
+  "metaDescription": "Corrida, ciclismo e musculação com drop, peso e amortecimento declarados, e guia de medidas por marca.",
   "hero": {
     "autoplay": 9000,
     "slides": [
       {
         "startsAt": "",
         "endsAt": "",
-        "img": "/img/uploads/rect89.webp",
-        "alt": "Headset banner",
-        "mobileImg": "/img/uploads/headphone.webp",
-        "href": "/headset",
-        "title": "20% off on first purchase",
-        "subtitle": "At demoStore you can shop the best tech of 2023. Enjoy and get 10% off on your first purchase!",
-        "buttonLink": "/",
-        "buttonText": "See"
+        "img": "/img/uploads/hero-corrida-desk.jpg",
+        "alt": "Corredora em passada plena na praia",
+        "mobileImg": "/img/uploads/hero-corrida-mob.jpg",
+        "href": "",
+        "title": "O tênis certo não é o mais caro",
+        "subtitle": "É o que casa com a sua pisada, o seu peso e a sua distância. Todos os três estão no anúncio.",
+        "buttonLink": "/corrida",
+        "buttonText": "Ver corrida"
       },
       {
         "startsAt": "",
         "endsAt": "",
-        "img": "/img/uploads/rect859.png",
-        "alt": "",
-        "mobileImg": "",
+        "img": "/img/uploads/hero-ficha-desk.jpg",
+        "alt": "Roda e transmissão de bicicleta em detalhe",
+        "mobileImg": "/img/uploads/hero-ficha-mob.jpg",
         "href": "",
-        "title": "",
-        "subtitle": "",
-        "buttonLink": "",
-        "buttonText": ""
+        "title": "Dois modelos, uma tabela",
+        "subtitle": "Drop, peso e amortecimento lado a lado — e um botão que esconde tudo o que é igual.",
+        "buttonLink": "/p/comparador",
+        "buttonText": "Como comparar"
       }
     ]
   },
   "sections": [
     {
+      "type": "c:comparador",
+      "title": "Compare antes de escolher"
+    },
+    {
       "type": "product-shelf",
       "collectionIdAndInfo": null,
-      "sort": "-price_discount,-sales",
-      "title": "",
+      "sort": "-sales",
+      "title": "Os mais levados",
       "isHeadless": false,
       "isShuffle": false,
       "limit": 12,
@@ -45,19 +49,37 @@
       "type": "banners-grid",
       "banners": [
         {
-          "img": "/img/uploads/rect8589.png",
-          "href": ""
+          "img": "/img/uploads/banner-corrida.jpg",
+          "alt": "Tênis de corrida verde-limão sobre superfície escura",
+          "href": "/corrida",
+          "title": "Corrida",
+          "subtitle": "Do primeiro 5k ao maratonista"
         },
         {
-          "img": "/img/uploads/passion.webp",
-          "href": ""
+          "img": "/img/uploads/banner-ciclismo.jpg",
+          "alt": "Bicicleta de estrada cinza e preta",
+          "href": "/ciclismo-e-musculacao",
+          "title": "Ciclismo",
+          "subtitle": "Capacete, vestuário e manutenção"
         },
         {
-          "img": "/img/uploads/rect89.webp",
-          "href": "",
-          "mobileImg": "/img/uploads/headphone.webp"
+          "img": "/img/uploads/banner-musculacao.jpg",
+          "alt": "Fileira de halteres hexagonais pretos",
+          "href": "/ciclismo-e-musculacao",
+          "title": "Musculação",
+          "subtitle": "Peso livre e acessório"
         }
       ]
+    },
+    {
+      "type": "product-shelf",
+      "collectionIdAndInfo": null,
+      "sort": "-price_discount",
+      "title": "Em promoção",
+      "isHeadless": false,
+      "isShuffle": false,
+      "limit": 12,
+      "page": 1
     }
   ]
 }

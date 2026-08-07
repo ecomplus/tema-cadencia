@@ -1,0 +1,196 @@
+---
+/*
+  COMPARADOR — a seção que justifica esta variante existir.
+
+  Tênis de corrida, bicicleta e relógio esportivo não se escolhem pela foto.
+  Escolhem-se por drop, peso, amortecimento, material do quadro, autonomia — e
+  esses números só querem dizer alguma coisa LADO A LADO. Um por vez, o
+  comprador não tem régua.
+
+  Nenhuma das outras quatorze variantes precisa mostrar dois produtos ao mesmo
+  tempo. É o que separa a Cadência das outras três "técnicas" do conjunto:
+
+    - Bitola   → qual peça SERVE          (especificação como filtro)
+    - Cardan   → serve no MEU carro       (especificação como compatibilidade)
+    - Circuito → qual é mais BARATO       (especificação como ficha, preço herói)
+    - Cadência → qual é MELHOR PRA MIM    (especificação como comparação)
+
+  ── O BOTÃO QUE ESCONDE O QUE É IGUAL ────────────────────────────────────
+  É o detalhe que faz a seção funcionar. Numa tabela de dez linhas, oito são
+  iguais entre os modelos e só duas decidem a compra. O comparador começa
+  mostrando tudo (para dar contexto) e permite colapsar para só o que muda.
+
+  ── O QUE É REAL E O QUE É DEMONSTRAÇÃO ──────────────────────────────────
+  Os modelos e as especificações abaixo são ESTÁTICOS e vivem neste arquivo.
+  Numa loja publicada isso viria de `specifications` dos produtos, e a seleção
+  seria feita pelo cliente a partir da vitrine (marcar "comparar" no card).
+
+  A comparação em si — a lógica de achar o que difere — é real e roda no
+  cliente, exatamente como rodaria com dado de verdade.
+*/
+import type { CmsFields, InferCmsOutput } from '@@sf/content';
+
+export const cmsFields = ({
+  title: {
+    widget: 'string',
+    label: { pt: 'Título', en: 'Title' },
+  },
+}) as const satisfies CmsFields;
+
+export type Props = InferCmsOutput<typeof cmsFields>;
+const { title = 'Compare antes de escolher' } = Astro.props;
+
+/*
+  Três tênis de corrida de perfis diferentes — neutro do dia a dia, leve de
+  prova e maximalista de longão. As linhas foram escolhidas para que algumas
+  sejam idênticas de propósito: é o que dá o que esconder.
+*/
+const atributos = [
+  'Modalidade',
+  'Drop',
+  'Peso (39 BR)',
+  'Amortecimento',
+  'Tipo de pisada',
+  'Placa de carbono',
+  'Distância indicada',
+  'Garantia',
+];
+
+const modelos = [
+  {
+    nome: 'Neutro Diário',
+    resumo: 'O par de todo dia',
+    specs: ['Corrida', '10 mm', '265 g', 'Médio', 'Neutra', 'Não', 'Até 15 km', '12 meses'],
+  },
+  {
+    nome: 'Leve de Prova',
+    resumo: 'Para buscar tempo',
+    specs: ['Corrida', '6 mm', '198 g', 'Firme', 'Neutra', 'Sim', 'Até 21 km', '12 meses'],
+  },
+  {
+    nome: 'Longão Máximo',
+    resumo: 'Volume sem dor',
+    specs: ['Corrida', '8 mm', '310 g', 'Macio', 'Neutra', 'Não', 'Acima de 21 km', '12 meses'],
+  },
+];
+
+/* Calculado no build: quais linhas têm valor diferente entre os modelos. */
+const difere = atributos.map((_, i) => {
+  const valores = modelos.map((m) => m.specs[i]);
+  return new Set(valores).size > 1;
+});
+const qtdIguais = difere.filter((d) => !d).length;
+---
+
+<section class="ui-section">
+  <div class="rounded-lg border-2 border-base-200 bg-white">
+    <div class="flex flex-wrap items-end justify-between gap-4 border-b-2
+      border-base-200 px-5 py-5 md:px-7">
+      <div>
+        <h2 class="ui-text-brand text-2xl leading-none text-base-900 md:text-3xl">
+          {title}
+        </h2>
+        <p class="mt-2 max-w-lg text-sm leading-relaxed text-base-600">
+          Drop, peso e amortecimento só querem dizer alguma coisa lado a lado.
+          Um por vez, não há régua.
+        </p>
+      </div>
+
+      <label
+        class="flex cursor-pointer select-none items-center gap-2.5 rounded
+        border-2 border-base-200 px-3.5 py-2 transition
+        hover:border-primary"
+      >
+        <input
+          type="checkbox"
+          data-comparador-so-diferencas
+          class="size-4 accent-primary"
+        />
+        <span class="text-xs font-bold uppercase tracking-wide text-base-800">
+          Só o que muda
+        </span>
+        <span class="ui-spec">{qtdIguais} linhas iguais</span>
+      </label>
+    </div>
+
+    {/*
+      `overflow-x-auto` no wrapper e não na tabela: tabela com scroll próprio
+      perde o cabeçalho fixo. Com quatro colunas em 320px o scroll é inevitável.
+    */}
+    <div class="overflow-x-auto">
+      <table data-comparador class="w-full min-w-[42rem] border-collapse text-sm">
+        <thead>
+          <tr>
+            <th class="w-40 border-b border-base-200 px-5 py-3 text-left
+              text-xs font-bold uppercase tracking-wide text-base-500 md:px-7">
+              Especificação
+            </th>
+            {modelos.map((m, i) => (
+              <th
+                class:list={[
+                  'border-b border-base-200 px-4 py-3 text-left align-bottom',
+                  i === 1 ? 'bg-secondary/15' : null,
+                ]}
+              >
+                <span class="ui-text-brand block text-lg leading-tight text-base-900">
+                  {m.nome}
+                </span>
+                <span class="mt-0.5 block text-xs font-normal normal-case text-base-600">
+                  {m.resumo}
+                </span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {atributos.map((attr, i) => (
+            <tr data-difere={difere[i] ? 'sim' : 'nao'} class="even:bg-base-50">
+              <th class="px-5 py-2.5 text-left text-xs font-semibold uppercase
+                tracking-wide text-base-600 md:px-7">
+                {attr}
+              </th>
+              {modelos.map((m, col) => (
+                <td
+                  class:list={[
+                    'px-4 py-2.5',
+                    col === 1 ? 'bg-secondary/10' : null,
+                    difere[i] ? 'font-semibold text-base-900' : 'text-base-600',
+                  ]}
+                >
+                  {m.specs[i]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="border-t border-base-200 px-5 py-3 text-[0.6875rem] leading-relaxed
+      text-base-500 md:px-7">
+      Vitrine de demonstração: os modelos e as especificações acima são fixos no
+      template. Numa loja publicada eles vêm da ficha de cada produto, e é o
+      cliente quem escolhe o que comparar.
+    </p>
+  </div>
+</section>
+
+<script>
+  /*
+    Alterna entre "tudo" e "só o que muda". A decisão de quais linhas diferem
+    já foi tomada no build (`data-difere` em cada `<tr>`), então aqui é só
+    mostrar e esconder — nada de recalcular no cliente.
+
+    `hidden` como atributo, e não classe utilitária: o UnoCSS varre `./src/**`,
+    e uma classe aplicada só por JS não geraria CSS nenhum.
+  */
+  document.querySelectorAll<HTMLInputElement>('[data-comparador-so-diferencas]')
+    .forEach((toggle) => {
+      const tabela = toggle.closest('section')?.querySelector('[data-comparador]');
+      if (!tabela) return;
+      const iguais = tabela.querySelectorAll<HTMLTableRowElement>('tr[data-difere="nao"]');
+      toggle.addEventListener('change', () => {
+        iguais.forEach((tr) => { tr.hidden = toggle.checked; });
+      });
+    });
+</script>

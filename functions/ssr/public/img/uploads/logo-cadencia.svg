@@ -1,0 +1,34 @@
+<!--
+  Wordmark placeholder da variante "Cadência" (artigos esportivos) — FONTE
+  EDITÁVEL. A loja serve o PNG gerado daqui: o `Picture` do storefront passa a
+  imagem pelo serviço de imagem do Astro, que rejeita `svg+xml`.
+
+  Regerar após editar:
+    cd .../public/img/uploads
+    node /home/vitorrgg/demo-catalog/scripts/rasterize.mjs \
+      /home/vitorrgg/store-cadencia/functions/ssr \
+      logo-cadencia.svg logo-cadencia.png 1200
+
+  IMPORTANTE: trocar o PNG e rebuildar NÃO troca a imagem servida — o Astro
+  reaproveita a entrada de cache. Rodar `scripts/limpar-cache-imagens.sh` antes
+  do build. Custou um ciclo de print para descobrir.
+
+  O desenho é uma marcação de ritmo: quatro traços em altura crescente, o
+  último em volt. Cadência é frequência — o objeto do nome não é um produto,
+  é um dado, então o símbolo é um gráfico e não um tênis.
+
+  Linha de apoio em 10px porque o logo é servido em `max-w-[210px]`: a caixa de
+  300 unidades encolhe para ~0,7×, e abaixo disso a linha vira borrão.
+
+  Fontes são as instaladas no ambiente que rasteriza (DejaVu/Ubuntu).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 72" width="300" height="72" role="img" aria-label="Cadência">
+  <g stroke="#0e7c66" stroke-width="5" stroke-linecap="round">
+    <path d="M13 46v-8" />
+    <path d="M25 46v-16" />
+    <path d="M37 46v-24" />
+  </g>
+  <path d="M49 46v-32" stroke="#d8f000" stroke-width="5" stroke-linecap="round" />
+  <text x="66" y="41" font-family="Ubuntu Sans, DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#1f2625" letter-spacing="0.5">CADÊNCIA</text>
+  <text x="68" y="58" font-family="DejaVu Sans, system-ui, sans-serif" font-size="10" font-weight="600" fill="#576360" letter-spacing="1.8">ESPORTE E PERFORMANCE</text>
+</svg>

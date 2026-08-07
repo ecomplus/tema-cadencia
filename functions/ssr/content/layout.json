@@ -6,35 +6,45 @@
   },
   "customCode": {
     "css": "",
-    "htmlHead": "",
+    "htmlHead": "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Anton&family=Figtree:wght@400;600;700;800&display=swap\">",
     "htmlBody": ""
   },
   "header": {
     "pitchBar": [
       {
-        "href": "/promotion",
-        "html": "Aproveite nossos descontos de até 50%!"
+        "href": "/p/medidas",
+        "html": "<b>Guia de medidas por marca</b> <d-md>numeração de tênis não é igual entre elas</d-md>"
+      },
+      {
+        "href": "/p/comparador",
+        "html": "<b>Compare lado a lado</b> <d-md>drop, peso e amortecimento na mesma tabela</d-md>"
       },
       {
         "href": "",
-        "html": "<b>Frete grátis</b> <d-md>para todo Brasil</d-md> a partir de {free_shipping_from_value}"
+        "html": "<b>Frete grátis</b> <d-md>para todo o Brasil</d-md> a partir de {free_shipping_from_value}"
       }
     ],
     "inlineMenuCategories": {
-      "featured": [],
-      "random": 7
+      "featured": [
+        "corrida",
+        "ciclismo-e-musculacao"
+      ],
+      "random": 0
     },
-    "isAlphabeticalSortSubmenu": false
+    "isAlphabeticalSortSubmenu": true
   },
   "footer": {
     "categoriesList": {
       "isActive": true,
-      "title": "",
-      "slugs": []
+      "title": "Modalidades",
+      "slugs": [
+        "corrida",
+        "ciclismo-e-musculacao"
+      ]
     },
     "pagesList": {
       "isActive": true,
-      "title": "",
+      "title": "Ajuda",
       "links": []
     },
     "stamps": [

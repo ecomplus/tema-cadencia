@@ -1,6 +1,46 @@
-html {
-  scroll-behavior: smooth;
+/*
+ * Design system da variante Cadência (artigos esportivos).
+ *
+ * O eixo do tema é COMPARAÇÃO. Quem compra tênis de corrida, bicicleta ou
+ * relógio esportivo não decide pela foto: decide por drop, peso, amortecimento,
+ * material do quadro, autonomia. São produtos que só se escolhem lado a lado, e
+ * é isso que o `ComparadorSection` faz — inclusive com um botão que ESCONDE o
+ * que é igual, porque numa tabela de dez linhas o que interessa são as duas que
+ * mudam.
+ *
+ * ── COMO ISSO SE SEPARA DAS OUTRAS VARIANTES TÉCNICAS ────────────────────
+ * O conjunto já tem três temas que lidam com especificação, e o risco de
+ * repetição é real — foi o que aconteceu entre Bitola e Circuito. O corte:
+ *
+ *   - Bitola (construção): qual peça SERVE. Especificação como filtro.
+ *   - Cardan (autopeças):  serve no MEU carro. Especificação como compatibilidade.
+ *   - Circuito (eletro):   qual é mais BARATO. Especificação como ficha, preço herói.
+ *   - Cadência (esporte):  qual é MELHOR PRA MIM. Especificação como comparação.
+ *
+ * Só aqui a tela precisa mostrar dois produtos ao mesmo tempo.
+ *
+ * ── ONDE O VOLT PODE ENTRAR ──────────────────────────────────────────────
+ * Regra: o volt MARCA, não preenche. Selo de desconto, borda de hover, chip de
+ * spec destacada, coluna do meio do comparador.
+ *
+ * Uma exceção, e é deliberada: o PAINEL DE TEXTO DO HERO, que o `HeroSlider`
+ * do pacote pinta com `secondary`. Ali ele cobre meia dobra — e é justamente
+ * onde a intensidade trabalha a favor, porque é a primeira coisa que se vê e
+ * o nicho é o único do conjunto que pode gritar. O texto por cima é
+ * `base-950`; volt com branco não passa em contraste nenhum.
+ *
+ * Fora o hero, se aparecer volt cobrindo área, é engano.
+ *
+ * ATENÇÃO — `customCode.css` do CMS não funciona hoje (o `<style>` do
+ * `Base.astro` no pacote não interpola a expressão). Fontes definidas aqui.
+ */
+
+:root {
+  --custom-font-sans: 'Figtree';
+  --font-brand: 'Anton', 'Figtree', sans-serif;
 }
+
+html { scroll-behavior: smooth; }
 body {
   overflow-x: hidden;
   overflow-y: scroll;
@@ -16,58 +56,69 @@ a, button, button > *, [role=button], [role=button] > * {
 }
 
 .ui-link {
-  @apply font-medium text-primary underline underline-offset-4
+  @apply font-semibold text-primary underline underline-offset-4
   hover:text-primary-bold active:text-primary-subtle;
 }
 
 [class*=ui-btn] {
-  @apply inline-block text-base font-medium px-4 py-2 rounded
-  border-2 border-transparent underline-offset-4 decoration-2
-  shadow focus:ring-1 focus:ring-offset-1 active:ring-2;
+  @apply inline-block text-sm font-bold uppercase tracking-[0.04em]
+  px-5 py-2.5 rounded border-2 border-transparent
+  focus:ring-2 focus:ring-offset-1 active:ring-2;
 }
-.ui-btn-sm {
-  @apply text-sm px-3 py-1.5 border-1;
-}
-.ui-btn-lg {
-  @apply text-lg font-bold px-6 py-3 lg:text-base lg:py-2.5 active:ring-3;
-}
-.ui-btn-primary {
-  @apply primary border-primary hover:primary-bold ring-primary/30;
-}
+.ui-btn-sm { @apply text-xs px-3.5 py-1.5 border-1; }
+.ui-btn-lg { @apply text-base px-8 py-3.5; }
+.ui-btn-primary { @apply primary border-primary hover:primary-bold ring-primary/30; }
+/*
+ * Volt no botão secundário com texto quase preto: é o único lugar em que ele
+ * cobre área, e ainda assim pequena. `text-base-950` e não branco — volt com
+ * branco por cima não passa em contraste nenhum.
+ */
 .ui-btn-secondary {
-  @apply bg-secondary-100/50 text-secondary border-secondary
-  hover:secondary ring-secondary/30;
+  @apply bg-secondary text-base-950 border-secondary
+  hover:bg-secondary-300 ring-secondary/40;
 }
 .ui-btn-contrast {
-  @apply bg-white text-primary hover:bg-primary-100 ring-white/30
-  decoration-primary-300 underline shadow-none;
+  @apply bg-white text-primary border-white hover:bg-base-100 ring-white/30 shadow-none;
 }
 .ui-btn-danger {
   @apply bg-danger-50 text-danger-700 border-danger-100
-  hover:bg-danger-600 hover:text-white
-  hover:border-danger-600 ring-danger-600/30;
+  hover:bg-danger-600 hover:text-white hover:border-danger-600 ring-danger-600/30;
 }
 
+/*
+ * `Anton` já é uma display pesadíssima e só tem um peso. `font-normal` é
+ * proposital: pedir `font-bold` faz o navegador simular negrito e a letra
+ * engorda borrada.
+ */
 .ui-text-brand, .ui-title {
-  @apply font-brand font-black italic;
+  @apply font-brand font-normal not-italic uppercase tracking-[0.01em];
 }
 .ui-title {
-  @apply text-3xl xl:text-5xl text-balance;
+  @apply text-4xl xl:text-6xl leading-[0.95] text-balance text-base-900;
+}
+
+/*
+ * Chip de especificação. É o átomo do tema: aparece no card, na tabela do
+ * comparador e no filtro, sempre igual, para o cliente aprender a ler drop,
+ * peso e amortecimento de uma tela para a outra.
+ */
+.ui-spec {
+  @apply inline-flex items-center gap-1 rounded-sm bg-base-100 px-2 py-0.5
+  font-mono text-[0.6875rem] font-semibold uppercase leading-none
+  tracking-wide text-base-700;
+}
+/* Marca a linha que DIFERE no comparador — o dado que decide a compra. */
+.ui-spec-destaque {
+  @apply bg-secondary/25 text-base-900;
 }
 
 [class*=ui-badge] {
-  @apply text-center px-2.5 py-0.5 rounded-md font-semibold
-  inline-block bg-secondary-200 text-secondary-900;
+  @apply text-center px-2 py-0.5 rounded-sm text-xs font-bold
+  uppercase inline-block bg-secondary text-base-950;
 }
-[class*=ui-badge-pill] {
-  @apply text-sm leading-relaxed py-0 rounded-full;
-}
-.ui-badge-pill-sm {
-  @apply text-xs min-w-[1rem] px-0.5;
-}
-.ui-badge-pill-lg {
-  @apply text-lg min-w-[1.75rem] px-2;
-}
+[class*=ui-badge-pill] { @apply text-sm leading-relaxed py-0 rounded-full; }
+.ui-badge-pill-sm { @apply text-xs min-w-[1rem] px-0.5; }
+.ui-badge-pill-lg { @apply text-lg min-w-[1.75rem] px-2; }
 
 .ui-alert {
   @apply bg-warning-100 text-warning-800 border-warning-200
@@ -77,11 +128,7 @@ a, button, button > *, [role=button], [role=button] > * {
 [class*=ui-section] {
   @apply w-full mx-auto px-[1px] max-w-[calc(100vw-2rem)]
   sm:max-w-[calc(100vw-3rem)] md:max-w-[calc(100vw-4rem)]
-  xl:max-w-[min(80rem,calc(100vw-6rem))];
+  xl:max-w-[min(84rem,calc(100vw-4rem))];
 }
-.ui-section {
-  @apply my-6 md:my-8;
-}
-.ui-section-slim {
-  @apply my-3;
-}
+.ui-section { @apply my-5 md:my-8; }
+.ui-section-slim { @apply my-2; }

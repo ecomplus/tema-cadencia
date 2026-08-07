@@ -1,98 +1,128 @@
+<!--
+  Card de produto — variante Cadência (artigos esportivos).
+
+  ── O CARD QUE PREPARA A COMPARAÇÃO ──────────────────────────────────────
+  O tema inteiro gira em torno de comparar (ver `ComparadorSection.astro`), e o
+  card é o ponto onde essa intenção nasce. Duas coisas só existem aqui:
+
+  1. A LINHA DE SPECS logo abaixo do nome — drop, peso, amortecimento. São os
+     três números que decidem a compra de um tênis de corrida, e mantê-los só
+     na ficha obriga o cliente a abrir cinco abas para escolher um par.
+     O mesmo `.ui-spec` reaparece na tabela do comparador, de propósito: o
+     vocabulário se aprende numa tela e se reconhece na outra.
+
+  2. O botão COMPARAR, ao lado de adicionar. É a segunda ação da vitrine, como
+     a lista de presentes é na Ninho — e pela mesma razão: parte relevante das
+     visitas não está comprando ainda, está escolhendo.
+
+  ATENÇÃO: as specs aqui são ESTÁTICAS. Ligar de verdade depende de
+  `specifications.drop`, `.peso` e `.amortecimento` cadastradas. Consta no README.
+
+  Botão dentro de `<a>` navega ao clicar — por isso a linha de ações fica FORA
+  do `ALink` e a moldura passou para a div que envolve os dois. Mesma armadilha
+  que já custou tempo na Bitola, na Circuito e na Pauta.
+-->
 <template>
   <article
     ref="card"
     :data-sku="product.sku"
-    class="group relative mx-auto h-full max-w-[350px] px-0.5 py-3 hover:z-[1]"
+    class="group relative mx-auto h-full max-w-[320px] py-2"
   >
-    <ALink
-      :href="link"
-      class="flex h-full flex-col overflow-hidden rounded bg-white
-      ring-black/5 group-hover:shadow group-hover:ring-1"
+    <div
+      class="flex h-full flex-col rounded-lg border-2 border-base-200 bg-white
+      p-3 transition hover:border-primary"
     >
-      <div class="aspect-square p-2
-        transition-transform md:group-hover:scale-110">
-        <div class="relative size-full overflow-hidden
-          rounded bg-white group-hover:rounded-none">
-          <span v-if="images?.length" class="text-xs text-opacity-70">
-            <AImg
-              :picture="images[0]"
-              :alt="title"
-              class="absolute left-0 top-0 block size-full object-cover"
-            />
-            <AImg
-              v-if="!isMobile && images[1] && wasHoveredOnce"
-              :picture="images[1]"
-              :alt="title"
-              class="absolute left-0 top-0 z-10 block size-full
-              object-cover text-transparent opacity-0 transition-opacity
-              group-hover:opacity-100 motion-safe:duration-300"
-            />
-          </span>
-          <div
-            v-else
-            class="size-full bg-gradient-to-br from-base-50/20 to-base-100"
+      <ALink :href="link" class="flex grow flex-col no-underline">
+        <div class="relative overflow-hidden rounded bg-base-50">
+          <AImg
+            v-if="images?.length"
+            :picture="images[0]"
+            :alt="title"
+            class="block aspect-square w-full object-cover transition-transform
+            duration-500 md:group-hover:scale-105"
           />
+          <div v-else class="aspect-square w-full bg-base-100" />
+          <span
+            v-if="discountPercentage"
+            class=":uno: absolute left-0 top-0 z-20 bg-secondary px-2 py-0.5
+            text-[0.6875rem] font-bold text-base-950"
+          >
+            -{{ discountPercentage }}%
+          </span>
         </div>
-      </div>
-      <span
-        v-if="discountPercentage"
-        class=":uno: absolute right-2 top-9
-        bg-secondary/70 py-0.5 pl-3 pr-1.5 text-xs text-on-secondary
-        transition-transform [clip-path:polygon(20%_0,100%_0,100%_100%,0_100%)]
-        md:group-hover:translate-x-2 md:group-hover:scale-110"
-      >
-        -<strong>{{ discountPercentage }}</strong>%
-      </span>
-      <div class="relative z-10 flex grow flex-col justify-between p-4">
+
         <component
           :is="headingTag"
-          class="line-clamp-2 no-underline ui-link"
-          :class="[
-            isActive ? 'text-base-700' : 'text-base-500',
-            link ? 'group-hover:text-primary group-hover:underline' : null,
-          ]"
+          class="mt-2.5 line-clamp-2 text-sm font-bold leading-snug"
+          :class="isActive ? 'text-base-900' : 'text-base-500'"
         >
           {{ title }}
         </component>
-        <div class="pt-2">
-          <div v-if="isActive">
+
+        <!-- Os três números que decidem a compra, antes do preço. -->
+        <ul class="mt-2 flex flex-wrap gap-1">
+          <li class="ui-spec">Drop 10 mm</li>
+          <li class="ui-spec">265 g</li>
+          <li class="ui-spec">Neutra</li>
+        </ul>
+
+        <div class="mt-auto pt-2.5">
+          <div v-if="isActive" class="[&_*]:font-bold [&_.text-xl]:text-xl">
             <Prices :product="product" />
           </div>
-          <span v-else class="bg-warning-100 text-warning-700 ui-badge">
+          <span v-else class="bg-warning-100 text-warning-800 ui-badge">
             {{ !isInStock ? $t.i19outOfStock : $t.i19inactive }}
           </span>
         </div>
-        <div v-if="isFailedToCart" class="pt-1 text-sm text-warning-800">
+      </ALink>
+
+      <div v-if="isActive" class="pt-2.5">
+        <div v-if="isFailedToCart" class="text-sm text-warning-800">
           {{ $t.i19someItemIsUnavailable }}
         </div>
-        <button
-          v-if="isActive && !hasVariations && !isFailedToCart"
-          class=":uno: absolute -top-6 left-0 -z-10 hidden w-full
-          rounded-none opacity-0 transition ui-btn-sm ui-btn-primary
-          group-hover:z-10 group-hover:opacity-100 md:block"
-          :style="buyCtaColor
-            ? `background: ${buyCtaColor}; border-color: ${buyCtaColor}`
-            : null"
-          @click.stop.prevent="loadToCart(1)"
-        >
-          <span class="mr-1 inline-block text-on-primary opacity-80">
-            &plus;
-          </span>
-          {{ $t.i19addToCart }}
-        </button>
+        <div v-else class="flex gap-1.5">
+          <button
+            v-if="!hasVariations"
+            class=":uno: grow ui-btn-sm ui-btn-primary"
+            @click.stop.prevent="loadToCart(1)"
+          >
+            {{ $t.i19addToCart }}
+          </button>
+          <!-- Produto com grade (quase todo tênis) leva para a ficha: escolher
+               numeração na vitrine é o caminho mais curto para a troca. -->
+          <ALink
+            v-else
+            :href="link"
+            class=":uno: grow text-center ui-btn-sm ui-btn-primary"
+          >
+            Escolher numeração
+          </ALink>
+          <button
+            class=":uno: shrink-0 ui-btn-sm ui-btn-secondary"
+            aria-label="Adicionar ao comparador"
+            title="Adicionar ao comparador"
+            @click.stop.prevent="compararToggle"
+          >
+            <!--
+              `i-mdi-scale-balance` na forma PREFIXADA: o nome cru só é
+              registrado a partir do primeiro conjunto que o tiver, e na Cardan
+              o heroicons ganhou a vez do Tabler — utilitário que não casa some
+              em silêncio no UnoCSS. `i-check` pode ficar cru: existe no
+              heroicons, que é o conjunto padrão.
+            -->
+            <i class="size-4" :class="emComparacao ? 'i-check' : 'i-mdi-scale-balance'"></i>
+          </button>
+        </div>
       </div>
-    </ALink>
+    </div>
   </article>
 </template>
 
 <script setup lang="ts">
-import { useElementHover } from '@vueuse/core';
 import {
   type Props as UseProductCardProps,
   useProductCard,
 } from '@@sf/composables/use-product-card';
-import { isMobile } from '@@sf/sf-lib';
-import { getAbValue } from '@@sf/state/ab-experiment';
 import Prices from '~/components/Prices.vue';
 
 export type Props = UseProductCardProps & {
@@ -114,11 +144,15 @@ const {
   isFailedToCart,
 } = useProductCard(props as UseProductCardProps);
 const card = ref<HTMLElement | null>(null);
-const isHovered = useElementHover(card);
-const wasHoveredOnce = ref(false);
-const unwatch = watch(isHovered, () => {
-  wasHoveredOnce.value = true;
-  unwatch();
-});
-const buyCtaColor = getAbValue('buyCtaColor');
+
+/*
+  O comparador de verdade não existe nesta demonstração — a seção da home usa
+  modelos fixos. Aqui o botão só marca e desmarca visualmente, para que o
+  fluxo fique legível no print e no clique.
+
+  Ligar de verdade = guardar os `_id` marcados em `state/` e alimentar o
+  `ComparadorSection` com eles em vez da lista estática. Consta no README.
+*/
+const emComparacao = ref(false);
+const compararToggle = () => { emComparacao.value = !emComparacao.value; };
 </script>
