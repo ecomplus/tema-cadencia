@@ -12,12 +12,16 @@
   "header": {
     "pitchBar": [
       {
+        "href": "/futebol",
+        "html": "<b>Campo, society ou quadra?</b> <d-md>o piso indicado vem escrito em cada chuteira</d-md>"
+      },
+      {
         "href": "/p/medidas",
         "html": "<b>Guia de medidas por marca</b> <d-md>numeração de tênis não é igual entre elas</d-md>"
       },
       {
         "href": "/p/comparador",
-        "html": "<b>Compare lado a lado</b> <d-md>drop, peso e amortecimento na mesma tabela</d-md>"
+        "html": "<b>Compare lado a lado</b> <d-md>drop, peso e tipo de trava na mesma tabela</d-md>"
       },
       {
         "href": "",
@@ -26,6 +30,7 @@
     ],
     "inlineMenuCategories": {
       "featured": [
+        "futebol",
         "corrida",
         "ciclismo-e-musculacao"
       ],
@@ -38,6 +43,7 @@
       "isActive": true,
       "title": "Modalidades",
       "slugs": [
+        "futebol",
         "corrida",
         "ciclismo-e-musculacao"
       ]

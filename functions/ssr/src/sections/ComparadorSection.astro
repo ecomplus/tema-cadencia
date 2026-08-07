@@ -2,10 +2,9 @@
 /*
   COMPARADOR — a seção que justifica esta variante existir.
 
-  Tênis de corrida, bicicleta e relógio esportivo não se escolhem pela foto.
-  Escolhem-se por drop, peso, amortecimento, material do quadro, autonomia — e
-  esses números só querem dizer alguma coisa LADO A LADO. Um por vez, o
-  comprador não tem régua.
+  Tênis de corrida, chuteira e bicicleta não se escolhem pela foto. Escolhem-se
+  por drop, peso, tipo de trava, piso — e esses dados só querem dizer alguma
+  coisa LADO A LADO. Um por vez, o comprador não tem régua.
 
   Nenhuma das outras quatorze variantes precisa mostrar dois produtos ao mesmo
   tempo. É o que separa a Cadência das outras três "técnicas" do conjunto:
@@ -15,18 +14,28 @@
     - Circuito → qual é mais BARATO       (especificação como ficha, preço herói)
     - Cadência → qual é MELHOR PRA MIM    (especificação como comparação)
 
+  ── DUAS MODALIDADES ─────────────────────────────────────────────────────
+  Corrida e FUTEBOL. A segunda não é enfeite: é o esporte de maior volume do
+  varejo brasileiro, e a compra errada de chuteira — trava de campo levada para
+  quadra, society usada em grama alta — é o defeito nº 1 do nicho, do mesmo
+  jeito que a peça de aplicação errada é na Cardan.
+
+  Note que a tabela de futebol quase não tem linha repetida, e a de corrida tem
+  três. É de propósito: mostra que o botão "só o que muda" ajuda muito num caso
+  e pouco no outro, que é como a ferramenta se comporta com dado real.
+
   ── O BOTÃO QUE ESCONDE O QUE É IGUAL ────────────────────────────────────
-  É o detalhe que faz a seção funcionar. Numa tabela de dez linhas, oito são
-  iguais entre os modelos e só duas decidem a compra. O comparador começa
-  mostrando tudo (para dar contexto) e permite colapsar para só o que muda.
+  Numa tabela de oito linhas, boa parte é idêntica entre os modelos e só duas
+  ou três decidem a compra. O comparador abre completo, para dar contexto, e
+  colapsa para só o que muda.
 
   ── O QUE É REAL E O QUE É DEMONSTRAÇÃO ──────────────────────────────────
-  Os modelos e as especificações abaixo são ESTÁTICOS e vivem neste arquivo.
-  Numa loja publicada isso viria de `specifications` dos produtos, e a seleção
-  seria feita pelo cliente a partir da vitrine (marcar "comparar" no card).
+  Os modelos e as especificações são ESTÁTICOS e vivem neste arquivo. Numa loja
+  publicada viriam de `specifications` dos produtos, e a seleção seria feita
+  pelo cliente a partir da vitrine (botão "comparar" no card).
 
-  A comparação em si — a lógica de achar o que difere — é real e roda no
-  cliente, exatamente como rodaria com dado de verdade.
+  A comparação em si — achar o que difere, esconder, alternar modalidade — é
+  real e roda no cliente exatamente como rodaria com dado de verdade.
 */
 import type { CmsFields, InferCmsOutput } from '@@sf/content';
 
@@ -40,50 +49,86 @@ export const cmsFields = ({
 export type Props = InferCmsOutput<typeof cmsFields>;
 const { title = 'Compare antes de escolher' } = Astro.props;
 
-/*
-  Três tênis de corrida de perfis diferentes — neutro do dia a dia, leve de
-  prova e maximalista de longão. As linhas foram escolhidas para que algumas
-  sejam idênticas de propósito: é o que dá o que esconder.
-*/
-const atributos = [
-  'Modalidade',
-  'Drop',
-  'Peso (39 BR)',
-  'Amortecimento',
-  'Tipo de pisada',
-  'Placa de carbono',
-  'Distância indicada',
-  'Garantia',
+const modalidades = [
+  {
+    id: 'corrida',
+    rotulo: 'Corrida',
+    icone: 'i-mdi-run',
+    /* Três perfis distintos: neutro do dia a dia, leve de prova e maximalista
+       de longão. Algumas linhas são idênticas de propósito. */
+    atributos: [
+      'Modalidade', 'Drop', 'Peso (39 BR)', 'Amortecimento',
+      'Tipo de pisada', 'Placa de carbono', 'Distância indicada', 'Garantia',
+    ],
+    modelos: [
+      {
+        nome: 'Neutro Diário',
+        resumo: 'O par de todo dia',
+        specs: ['Corrida', '10 mm', '265 g', 'Médio', 'Neutra', 'Não', 'Até 15 km', '12 meses'],
+      },
+      {
+        nome: 'Leve de Prova',
+        resumo: 'Para buscar tempo',
+        specs: ['Corrida', '6 mm', '198 g', 'Firme', 'Neutra', 'Sim', 'Até 21 km', '12 meses'],
+      },
+      {
+        nome: 'Longão Máximo',
+        resumo: 'Volume sem dor',
+        specs: ['Corrida', '8 mm', '310 g', 'Macio', 'Neutra', 'Não', 'Acima de 21 km', '12 meses'],
+      },
+    ],
+  },
+  {
+    id: 'futebol',
+    rotulo: 'Futebol',
+    icone: 'i-mdi-soccer',
+    /* O corte que importa aqui é PISO, não performance: campo, society e
+       futsal usam solados incompatíveis, e trocar um pelo outro machuca ou
+       destrói a quadra. */
+    atributos: [
+      'Piso indicado', 'Tipo de trava', 'Solado', 'Cabedal',
+      'Peso (39 BR)', 'Serve em quadra?', 'Serve em grama alta?', 'Garantia',
+    ],
+    modelos: [
+      {
+        nome: 'Campo',
+        resumo: 'Grama natural',
+        specs: [
+          'Grama natural', 'Mista (FG)', 'Travas cônicas e lâmina',
+          'Sintético macio', '250 g', 'Não', 'Sim', '3 meses',
+        ],
+      },
+      {
+        nome: 'Society',
+        resumo: 'Grama sintética',
+        specs: [
+          'Grama sintética', 'Borracha baixa (TF)', 'Cravos curtos e densos',
+          'Sintético com reforço', '270 g', 'Não', 'Não', '3 meses',
+        ],
+      },
+      {
+        nome: 'Futsal',
+        resumo: 'Quadra',
+        specs: [
+          'Quadra', 'Sem trava (IC)', 'Liso antiderrapante',
+          'Microfibra', '230 g', 'Sim', 'Não', '3 meses',
+        ],
+      },
+    ],
+  },
 ];
 
-const modelos = [
-  {
-    nome: 'Neutro Diário',
-    resumo: 'O par de todo dia',
-    specs: ['Corrida', '10 mm', '265 g', 'Médio', 'Neutra', 'Não', 'Até 15 km', '12 meses'],
-  },
-  {
-    nome: 'Leve de Prova',
-    resumo: 'Para buscar tempo',
-    specs: ['Corrida', '6 mm', '198 g', 'Firme', 'Neutra', 'Sim', 'Até 21 km', '12 meses'],
-  },
-  {
-    nome: 'Longão Máximo',
-    resumo: 'Volume sem dor',
-    specs: ['Corrida', '8 mm', '310 g', 'Macio', 'Neutra', 'Não', 'Acima de 21 km', '12 meses'],
-  },
-];
-
-/* Calculado no build: quais linhas têm valor diferente entre os modelos. */
-const difere = atributos.map((_, i) => {
-  const valores = modelos.map((m) => m.specs[i]);
-  return new Set(valores).size > 1;
+/* Calculado no build por modalidade: quais linhas têm valor diferente. */
+const dados = modalidades.map((m) => {
+  const difere = m.atributos.map((_, i) => (
+    new Set(m.modelos.map((mod) => mod.specs[i])).size > 1
+  ));
+  return { ...m, difere, qtdIguais: difere.filter((d) => !d).length };
 });
-const qtdIguais = difere.filter((d) => !d).length;
 ---
 
 <section class="ui-section">
-  <div class="rounded-lg border-2 border-base-200 bg-white">
+  <div data-comparador-raiz class="rounded-lg border-2 border-base-200 bg-white">
     <div class="flex flex-wrap items-end justify-between gap-4 border-b-2
       border-base-200 px-5 py-5 md:px-7">
       <div>
@@ -91,80 +136,121 @@ const qtdIguais = difere.filter((d) => !d).length;
           {title}
         </h2>
         <p class="mt-2 max-w-lg text-sm leading-relaxed text-base-600">
-          Drop, peso e amortecimento só querem dizer alguma coisa lado a lado.
+          Drop, peso e tipo de trava só querem dizer alguma coisa lado a lado.
           Um por vez, não há régua.
         </p>
       </div>
 
-      <label
-        class="flex cursor-pointer select-none items-center gap-2.5 rounded
-        border-2 border-base-200 px-3.5 py-2 transition
-        hover:border-primary"
-      >
-        <input
-          type="checkbox"
-          data-comparador-so-diferencas
-          class="size-4 accent-primary"
-        />
-        <span class="text-xs font-bold uppercase tracking-wide text-base-800">
-          Só o que muda
-        </span>
-        <span class="ui-spec">{qtdIguais} linhas iguais</span>
-      </label>
+      <div class="flex flex-wrap items-center gap-2">
+        {/*
+          Abas de modalidade. `role=tab` de verdade, com `aria-selected` — é
+          navegação, não decoração, e leitor de tela precisa saber qual está
+          ativa.
+        */}
+        <div role="tablist" aria-label="Modalidade" class="flex gap-1.5">
+          {dados.map((m, i) => (
+            <button
+              type="button"
+              role="tab"
+              data-comparador-aba={m.id}
+              data-iguais={m.qtdIguais}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              class="flex items-center gap-1.5 rounded border-2 px-3 py-2
+              text-xs font-bold uppercase tracking-wide transition
+              aria-selected:border-primary aria-selected:bg-primary
+              aria-selected:text-white
+              [&[aria-selected=false]]:border-base-200
+              [&[aria-selected=false]]:text-base-700
+              [&[aria-selected=false]]:hover:border-primary"
+            >
+              <i class={`size-4 ${m.icone}`}></i>
+              {m.rotulo}
+            </button>
+          ))}
+        </div>
+
+        <label
+          class="flex cursor-pointer select-none items-center gap-2.5 rounded
+          border-2 border-base-200 px-3.5 py-2 transition hover:border-primary"
+        >
+          <input type="checkbox" data-comparador-so-diferencas class="size-4 accent-primary" />
+          <span class="text-xs font-bold uppercase tracking-wide text-base-800">
+            Só o que muda
+          </span>
+          {/*
+            UM contador só, com o texto trocado por JS na virada de aba.
+
+            A primeira versão tinha um `<span>` por modalidade e escondia os
+            outros com o atributo `hidden` — e os dois apareciam juntos. Motivo:
+            `.ui-spec` aplica `inline-flex`, e utilitário de classe vence o
+            `[hidden] { display: none }` do reset no desempate por ordem. Em vez
+            de brigar com a cascata (`!hidden`, `[hidden]:!display-none`), é mais
+            simples ter um elemento só.
+          */}
+          <span class="ui-spec" data-comparador-contagem>
+            {dados[0].qtdIguais} {dados[0].qtdIguais === 1 ? 'linha igual' : 'linhas iguais'}
+          </span>
+        </label>
+      </div>
     </div>
 
-    {/*
-      `overflow-x-auto` no wrapper e não na tabela: tabela com scroll próprio
-      perde o cabeçalho fixo. Com quatro colunas em 320px o scroll é inevitável.
-    */}
-    <div class="overflow-x-auto">
-      <table data-comparador class="w-full min-w-[42rem] border-collapse text-sm">
-        <thead>
-          <tr>
-            <th class="w-40 border-b border-base-200 px-5 py-3 text-left
-              text-xs font-bold uppercase tracking-wide text-base-500 md:px-7">
-              Especificação
-            </th>
-            {modelos.map((m, i) => (
-              <th
-                class:list={[
-                  'border-b border-base-200 px-4 py-3 text-left align-bottom',
-                  i === 1 ? 'bg-secondary/15' : null,
-                ]}
-              >
-                <span class="ui-text-brand block text-lg leading-tight text-base-900">
-                  {m.nome}
-                </span>
-                <span class="mt-0.5 block text-xs font-normal normal-case text-base-600">
-                  {m.resumo}
-                </span>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {atributos.map((attr, i) => (
-            <tr data-difere={difere[i] ? 'sim' : 'nao'} class="even:bg-base-50">
-              <th class="px-5 py-2.5 text-left text-xs font-semibold uppercase
-                tracking-wide text-base-600 md:px-7">
-                {attr}
-              </th>
-              {modelos.map((m, col) => (
-                <td
-                  class:list={[
-                    'px-4 py-2.5',
-                    col === 1 ? 'bg-secondary/10' : null,
-                    difere[i] ? 'font-semibold text-base-900' : 'text-base-600',
-                  ]}
-                >
-                  {m.specs[i]}
-                </td>
+    {dados.map((m, i) => (
+      <div data-comparador-painel={m.id} hidden={i !== 0}>
+        {/*
+          `overflow-x-auto` no wrapper e não na tabela: tabela com scroll
+          próprio perde o cabeçalho. Com quatro colunas em 320px o scroll é
+          inevitável.
+        */}
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[42rem] border-collapse text-sm">
+            <thead>
+              <tr>
+                <th class="w-44 border-b border-base-200 px-5 py-3 text-left
+                  text-xs font-bold uppercase tracking-wide text-base-500 md:px-7">
+                  Especificação
+                </th>
+                {m.modelos.map((mod, col) => (
+                  <th
+                    class:list={[
+                      'border-b border-base-200 px-4 py-3 text-left align-bottom',
+                      col === 1 ? 'bg-secondary/15' : null,
+                    ]}
+                  >
+                    <span class="ui-text-brand block text-lg leading-tight text-base-900">
+                      {mod.nome}
+                    </span>
+                    <span class="mt-0.5 block text-xs font-normal normal-case text-base-600">
+                      {mod.resumo}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {m.atributos.map((attr, linha) => (
+                <tr data-difere={m.difere[linha] ? 'sim' : 'nao'} class="even:bg-base-50">
+                  <th class="px-5 py-2.5 text-left text-xs font-semibold uppercase
+                    tracking-wide text-base-600 md:px-7">
+                    {attr}
+                  </th>
+                  {m.modelos.map((mod, col) => (
+                    <td
+                      class:list={[
+                        'px-4 py-2.5',
+                        col === 1 ? 'bg-secondary/10' : null,
+                        m.difere[linha] ? 'font-semibold text-base-900' : 'text-base-600',
+                      ]}
+                    >
+                      {mod.specs[linha]}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ))}
 
     <p class="border-t border-base-200 px-5 py-3 text-[0.6875rem] leading-relaxed
       text-base-500 md:px-7">
@@ -177,20 +263,48 @@ const qtdIguais = difere.filter((d) => !d).length;
 
 <script>
   /*
-    Alterna entre "tudo" e "só o que muda". A decisão de quais linhas diferem
-    já foi tomada no build (`data-difere` em cada `<tr>`), então aqui é só
-    mostrar e esconder — nada de recalcular no cliente.
+    Duas responsabilidades: alternar a modalidade e esconder as linhas iguais.
 
-    `hidden` como atributo, e não classe utilitária: o UnoCSS varre `./src/**`,
-    e uma classe aplicada só por JS não geraria CSS nenhum.
+    Quais linhas diferem já foi decidido no build (`data-difere` em cada `<tr>`),
+    então aqui não se recalcula nada — só mostra e esconde.
+
+    `hidden` como ATRIBUTO, não classe utilitária: o UnoCSS varre `./src/**` e
+    uma classe aplicada apenas por JS não geraria CSS nenhum.
   */
-  document.querySelectorAll<HTMLInputElement>('[data-comparador-so-diferencas]')
-    .forEach((toggle) => {
-      const tabela = toggle.closest('section')?.querySelector('[data-comparador]');
-      if (!tabela) return;
-      const iguais = tabela.querySelectorAll<HTMLTableRowElement>('tr[data-difere="nao"]');
-      toggle.addEventListener('change', () => {
-        iguais.forEach((tr) => { tr.hidden = toggle.checked; });
+  document.querySelectorAll<HTMLElement>('[data-comparador-raiz]').forEach((raiz) => {
+    const abas = raiz.querySelectorAll<HTMLButtonElement>('[data-comparador-aba]');
+    const toggle = raiz.querySelector<HTMLInputElement>('[data-comparador-so-diferencas]');
+
+    const contagem = raiz.querySelector<HTMLElement>('[data-comparador-contagem]');
+    const painel = (id: string) => raiz
+      .querySelector<HTMLElement>(`[data-comparador-painel="${id}"]`);
+
+    const aplicarFiltro = () => {
+      const esconder = !!toggle?.checked;
+      raiz.querySelectorAll<HTMLTableRowElement>('tr[data-difere="nao"]')
+        .forEach((tr) => { tr.hidden = esconder; });
+    };
+
+    abas.forEach((aba) => {
+      aba.addEventListener('click', () => {
+        const alvo = aba.dataset.comparadorAba!;
+        abas.forEach((outra) => {
+          const id = outra.dataset.comparadorAba!;
+          const ativa = id === alvo;
+          outra.setAttribute('aria-selected', String(ativa));
+          const p = painel(id);
+          if (p) p.hidden = !ativa;
+        });
+        if (contagem) {
+          const n = Number(aba.dataset.iguais || 0);
+          contagem.textContent = `${n} ${n === 1 ? 'linha igual' : 'linhas iguais'}`;
+        }
+        /* Reaplica: o painel que acabou de aparecer nasce com todas as linhas
+           visíveis, mas o botão pode estar marcado. */
+        aplicarFiltro();
       });
     });
+
+    toggle?.addEventListener('change', aplicarFiltro);
+  });
 </script>

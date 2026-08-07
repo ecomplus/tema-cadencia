@@ -19,12 +19,24 @@
       {
         "startsAt": "",
         "endsAt": "",
+        "img": "/img/uploads/hero-futebol-desk.jpg",
+        "alt": "Jogador cobrando falta em campo de futebol",
+        "mobileImg": "/img/uploads/hero-futebol-mob.jpg",
+        "href": "",
+        "title": "Campo, society ou quadra?",
+        "subtitle": "A trava errada machuca o pé e destrói a quadra. O piso indicado vem escrito em cada chuteira.",
+        "buttonLink": "/futebol",
+        "buttonText": "Ver futebol"
+      },
+      {
+        "startsAt": "",
+        "endsAt": "",
         "img": "/img/uploads/hero-ficha-desk.jpg",
         "alt": "Roda e transmissão de bicicleta em detalhe",
         "mobileImg": "/img/uploads/hero-ficha-mob.jpg",
         "href": "",
         "title": "Dois modelos, uma tabela",
-        "subtitle": "Drop, peso e amortecimento lado a lado — e um botão que esconde tudo o que é igual.",
+        "subtitle": "Drop, peso e tipo de trava lado a lado — e um botão que esconde tudo o que é igual.",
         "buttonLink": "/p/comparador",
         "buttonText": "Como comparar"
       }
@@ -54,6 +66,13 @@
           "href": "/corrida",
           "title": "Corrida",
           "subtitle": "Do primeiro 5k ao maratonista"
+        },
+        {
+          "img": "/img/uploads/banner-futebol.jpg",
+          "alt": "Bola de futebol sobre grama",
+          "href": "/futebol",
+          "title": "Futebol",
+          "subtitle": "Chuteira por piso, bola e goleiro"
         },
         {
           "img": "/img/uploads/banner-ciclismo.jpg",

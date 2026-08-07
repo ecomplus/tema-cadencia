@@ -55,6 +55,32 @@ fabricante informa.
 Suba. Tênis de corrida não "cede" como couro — o cabedal em malha acomoda o
 volume, mas não ganha comprimento.
 
+## Chuteira é o contrário
+
+Aqui a regra se inverte, e é o erro mais comum de quem compra chuteira pela
+primeira vez online: **chuteira se usa justa**, com folga de no máximo 0,5 cm.
+
+O pé precisa estar preso ao solado para que a trava responda ao movimento. Com
+folga o pé desliza dentro do calçado nas mudanças de direção, e o resultado é
+bolha, unha preta e menos controle de bola.
+
+| Modalidade | Folga |
+|---|---|
+| Campo e society | até 0,5 cm |
+| Futsal | 0,5 cm |
+| Corrida | 0,5 a 1,5 cm, conforme a distância |
+
+Chuteira de cabedal em couro (natural ou sintético macio) **cede um pouco** com
+o uso e molda ao pé; a de microfibra praticamente não cede. O material está no
+anúncio.
+
+### Antes do tamanho, o piso
+
+Errar o número incomoda. Errar o piso machuca — e em quadra coberta ainda
+danifica o piso, o que costuma render advertência do local. Confira o piso
+indicado antes da numeração; a tabela de comparação da home mostra os três lado
+a lado.
+
 ## Ainda assim errou
 
 A [troca](/p/trocas) é sem custo para peça não usada, na embalagem original.

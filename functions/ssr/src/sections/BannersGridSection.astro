@@ -22,10 +22,20 @@ export const cmsFields = ({
 
 export type Props = InferCmsOutput<typeof cmsFields>;
 const { banners = [] } = Astro.props;
+
+/*
+ * O número de colunas segue a quantidade de banners cadastrada, em vez de ser
+ * fixo em 3. Esta loja tem QUATRO modalidades (corrida, futebol, ciclismo,
+ * musculação) e com `sm:grid-cols-3` a quarta caía sozinha numa linha, ocupando
+ * um terço da largura ao lado de dois vazios.
+ */
+const colunas = banners.length % 4 === 0
+  ? 'sm:grid-cols-2 lg:grid-cols-4'
+  : 'sm:grid-cols-3';
 ---
 
 <section class="ui-section">
-  <ul class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <ul class:list={['grid grid-cols-1 gap-4', colunas]}>
     {banners.map((banner) => (
       <li>
         <a
