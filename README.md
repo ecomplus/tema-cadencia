@@ -3,9 +3,15 @@
 Cópia do starter [`ecomplus/store`](https://github.com/ecomplus/store)
 tematizada para **corrida, ciclismo, musculação e trilha**.
 
-> **Este nicho ainda não existe no site institucional.** Não há marca em
-> `src/config/brands.ts` nem página em `/segmentos/`. O posicionamento foi
-> **proposto**, não portado. Nome, logo e domínio são placeholders.
+> **Página de segmento escrita; demo ainda NÃO publicada.**
+> `/segmentos/artigos-esportivos` (Artigos esportivos) já existe em `www.e-com.plus`, na branch
+> `feature/beleza`, e aponta para `tema-cadencia.web.app` — que ainda responde
+> 404. **Publicar a demo antes de subir o site**, senão a página institucional
+> sai com link morto.
+>
+> Não há marca em `src/config/brands.ts`: aquele arquivo é a camada das
+> variantes `/demo/<slug>`, que é outra coisa. Nome, logo e domínio aqui são
+> placeholders.
 
 ## A tese do tema: o eixo é COMPARAÇÃO
 
